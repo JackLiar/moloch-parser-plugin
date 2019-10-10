@@ -1,0 +1,9 @@
+if(NOT CPACK_GENERATOR)
+    list(APPEND CPACK_GENERATOR TGZ)
+endif()
+
+list(FIND CPACK_GENERATOR "RPM" rpm_format)
+if(rpm_format GREATER_EQUAL 0)
+    set(CPACK_RPM_PARSER_PACKAGE_REQUIRES "moloch == 2.0.0")
+    set(CPACK_RPM_PLUGIN_PACKAGE_REQUIRES "moloch == 2.0.0")
+endif()
