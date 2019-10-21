@@ -41,16 +41,16 @@ function(add_moloch_parser parser_name)
 endfunction()
 
 function(add_moloch_plugin plugin_name)
-    set(parser_src
+    set(plugin_src
         ${CMAKE_CURRENT_SOURCE_DIR}/${plugin_name}.cc
         ${CMAKE_CURRENT_SOURCE_DIR}/plugin.h
     )
-    add_library(${plugin_name} SHARED ${parser_src})
+    add_library(${plugin_name} SHARED ${plugin_src})
     add_dependencies(${plugin_name} libglib)
 
     moloch_set_target_properties(${plugin_name})
 
     install(TARGETS ${plugin_name}
-        LIBRARY DESTINATION plugins COMPONENT "parser-${plugin_name}"
+        LIBRARY DESTINATION plugins COMPONENT "plugin-${plugin_name}"
     )
 endfunction()
