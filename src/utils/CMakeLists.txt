@@ -13,9 +13,9 @@ target_link_libraries(utils
 moloch_set_target_properties(utils)
 
 install(FILES
-    ${CMAKE_BINARY_DIR}/install/libpcre.so
-    ${CMAKE_BINARY_DIR}/install/libhs.so
-    ${CMAKE_BINARY_DIR}/install/libhs.so.5
-    ${CMAKE_BINARY_DIR}/install/libhs.so.5.2.0
+    ${CMAKE_BINARY_DIR}/install/lib/libpcre.so
+    ${CMAKE_BINARY_DIR}/install/lib/libhs.so
+    ${CMAKE_BINARY_DIR}/install/lib/libhs.so.5
+    ${CMAKE_BINARY_DIR}/install/lib/libhs.so.5.2.1
     DESTINATION lib
 )
