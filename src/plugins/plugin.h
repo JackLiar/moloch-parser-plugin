@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include "moloch.h"
+
 #pragma GCC visibility push(default)
 
 void moloch_plugin_init();
