@@ -1,9 +1,14 @@
 function(moloch_set_target_properties target)
+    set(install_rpath_list
+        ${CPACK_PACKAGING_INSTALL_PREFIX}/lib/${target}
+        ${CPACK_PACKAGING_INSTALL_PREFIX}/lib64/${target}
+    )
     set_target_properties(${target} PROPERTIES
         CXX_STANDARD 11
         C_STANDARD 99
         PREFIX ""
         POSITION_INDEPENDENT_CODE ON
+        INSTALL_RPATH "${install_rpath_list}"
     )
     target_compile_options(${target}
         PUBLIC -DMOLOCH_USE_MALLOC -fno-common -fsanitize=address
@@ -23,34 +28,35 @@ function(moloch_set_target_properties target)
         PRIVATE ${CMAKE_BINARY_DIR}/install/lib
         PRIVATE ${CMAKE_BINARY_DIR}/install/lib64
     )
+    target_link_libraries(${target}
+        PRIVATE asan
+    )   
+endfunction()
+
+function(add_moloch_parser_or_plugin target type)
+    set(src_files
+        ${CMAKE_CURRENT_SOURCE_DIR}/${target}.cc
+        ${CMAKE_CURRENT_SOURCE_DIR}/../${type}.h
+    )
+    add_library(${target} SHARED ${src_files})
+    add_dependencies(${target} libglib)
+
+    moloch_set_target_properties(${target})
+
+    install(TARGETS ${target}
+        LIBRARY DESTINATION "${type}s" COMPONENT "${type}-${target}"
+    )
 endfunction()
 
 function(add_moloch_parser parser_name)
-    set(parser_src
-        ${CMAKE_CURRENT_SOURCE_DIR}/${parser_name}.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/parser.h
-    )
-    add_library(${parser_name} SHARED ${parser_src})
-    add_dependencies(${parser_name} libglib)
-
-    moloch_set_target_properties(${parser_name})
-
-    install(TARGETS ${parser_name}
-        LIBRARY DESTINATION parsers COMPONENT "parser-${parser_name}"
-    )
+    add_moloch_parser_or_plugin(${parser_name} "parser")
 endfunction()
 
 function(add_moloch_plugin plugin_name)
-    set(plugin_src
-        ${CMAKE_CURRENT_SOURCE_DIR}/${plugin_name}.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/plugin.h
-    )
-    add_library(${plugin_name} SHARED ${plugin_src})
-    add_dependencies(${plugin_name} libglib)
+    add_moloch_parser_or_plugin(${plugin_name} "plugin")
+endfunction()
 
-    moloch_set_target_properties(${plugin_name})
-
-    install(TARGETS ${plugin_name}
-        LIBRARY DESTINATION plugins COMPONENT "plugin-${plugin_name}"
-    )
+function(add_source_files target src_files)
+    get_target_property(source target SOURCES)
+    set(SOURCE ${SOURCE} ${src_files})
 endfunction()
