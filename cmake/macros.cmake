@@ -30,6 +30,8 @@ macro(print_configuration)
     message(STATUS "CMake build type .................: ${CMAKE_BUILD_TYPE}")
     message(STATUS "Install prefix ...................: ${CMAKE_INSTALL_PREFIX}")
     message(STATUS "Packaging generator ..............: ${CPACK_GENERATOR}")
+    message(STATUS "Moloch parsers ...................: ${moloch_parsers}")
+    message(STATUS "Moloch plugins ...................: ${moloch_plugins}")
     message(STATUS "")
 endmacro(print_configuration)
 

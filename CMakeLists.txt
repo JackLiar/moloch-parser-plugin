@@ -7,8 +7,23 @@ include(macros)
 include(functions)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/utils)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/parsers)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/plugins)
+# ================================
+# add moloch parsers
+# ================================
+set(moloch_parsers parser)
+
+foreach(parser_name IN LISTS moloch_parsers)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/${parser_name})
+endforeach()
+
+# ================================
+# add moloch plugins
+# ================================
+set(moloch_plugins plugin)
+
+foreach(plugin_name IN LISTS moloch_plugins)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/plugins/${plugin_name})
+endforeach()
 
 include(packaging)
 
