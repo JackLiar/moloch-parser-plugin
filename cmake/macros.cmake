@@ -32,6 +32,7 @@ macro(print_configuration)
     message(STATUS "Packaging generator ..............: ${CPACK_GENERATOR}")
     message(STATUS "Moloch parsers ...................: ${moloch_parsers}")
     message(STATUS "Moloch plugins ...................: ${moloch_plugins}")
+    message(STATUS "Enable Sanitize ..................: ${ENABLE_SANITIZE}")
     message(STATUS "")
 endmacro(print_configuration)
 

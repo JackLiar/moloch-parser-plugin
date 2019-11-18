@@ -11,9 +11,7 @@ function(moloch_set_target_properties target)
         INSTALL_RPATH "${install_rpath_list}"
     )
     target_compile_options(${target}
-        PUBLIC -DMOLOCH_USE_MALLOC -fno-common -fsanitize=address
-        PUBLIC $<$<COMPILE_LANGUAGE:C>:-fsanitize=integer>
-        PUBLIC $<$<COMPILE_LANGUAGE:C>:-fsanitize=nullability>
+        PUBLIC -DMOLOCH_USE_MALLOC -fno-common
         PUBLIC -Wall -Wextra -DGNU_SOURCE -fno-strict-aliasing
         PUBLIC -fvisibility=hidden -Bsymbolic
     )
@@ -28,9 +26,16 @@ function(moloch_set_target_properties target)
         PRIVATE ${CMAKE_BINARY_DIR}/install/lib
         PRIVATE ${CMAKE_BINARY_DIR}/install/lib64
     )
-    target_link_libraries(${target}
-        PRIVATE asan
-    )   
+    if(ENABLE_SANITIZE)
+        target_compile_options(${target}
+            PUBLIC -fsanitize=address
+            PUBLIC $<$<COMPILE_LANGUAGE:C>:-fsanitize=integer>
+            PUBLIC $<$<COMPILE_LANGUAGE:C>:-fsanitize=nullability>
+        )
+        target_link_libraries(${target}
+            PRIVATE asan
+        )
+    endif()
 endfunction()
 
 function(add_moloch_parser_or_plugin target type)
