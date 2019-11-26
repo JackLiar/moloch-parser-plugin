@@ -40,7 +40,6 @@ endfunction()
 
 function(add_moloch_parser_or_plugin target type)
     set(src_files
-        ${CMAKE_CURRENT_SOURCE_DIR}/${target}.cc
         ${CMAKE_CURRENT_SOURCE_DIR}/../${type}.h
     )
     add_library(${target} SHARED ${src_files})
